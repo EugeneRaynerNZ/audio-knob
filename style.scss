@@ -1,5 +1,4 @@
 body{
-    background: blue;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,32 +9,32 @@ body{
         row-gap: 32px;
         flex-direction: column;
 
-        .nob{
+        .knob{
             border-radius: 50%;
             height: 80px;
             width: 80px;
             background: rgb(34,193,195);
             background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
-            transform: rotate(260deg);
+            // transform: rotate(260deg);
             position: relative;
     
-            &:before {
-                content: "";
-                position: absolute;
-                left: 0;
-                background: black;
-                width: 25px;
-                height: 25px;
-            }
+            // &:before {
+            //     content: "";
+            //     position: absolute;
+            //     left: 0;
+            //     background: black;
+            //     width: 25px;
+            //     height: 25px;
+            // }
     
-            &:after {
-                content: "";
-                position: absolute;
-                right: 0;
-                background: red;
-                width: 25px;
-                height: 25px;
-            }
+            // &:after {
+            //     content: "";
+            //     position: absolute;
+            //     right: 0;
+            //     background: red;
+            //     width: 25px;
+            //     height: 25px;
+            // }
     
             .handle::-webkit-slider-thumb {
                 -webkit-appearance: none;

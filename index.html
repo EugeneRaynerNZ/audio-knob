@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sound Nob</title>
+    <title>Audio Nob</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="nob">
-            <input type="range" id="filter" class="handle" list="filter-vals" min="0" max="2000" value="0" step="0.01" data-action="filter" />
+        <div id="knob" class="knob">
+            <!-- <input type="range" id="filter" class="handle" list="filter-vals" min="0" max="2000" value="0" step="0.01" data-action="filter" />
             <datalist id="filter-vals">
                 <option value="0" label="left">
                 <option value="2000" label="right">
             </datalist>
-            <label for="filter">Filter</label>
+            <label for="filter">Filter</label> -->
         </div>
     
         <audio src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3" crossorigin="anonymous" ></audio>
-        <button data-playing="false" class="tape-controls-play" role="switch" aria-checked="false">
+        <button data-playing="false" class="play" role="switch" aria-checked="false">
             <span>Play/Pause</span>
         </button>
+
+        <div id="volumeValue">
+
+        </div>
+        <!-- <script src="script.js"></script> -->
         <script src="script.js"></script>
     </div>
 </body>

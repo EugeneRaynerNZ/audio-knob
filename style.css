@@ -1,5 +1,4 @@
 body {
-  background: blue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,32 +9,15 @@ body .container {
   row-gap: 32px;
   flex-direction: column;
 }
-body .container .nob {
+body .container .knob {
   border-radius: 50%;
   height: 80px;
   width: 80px;
   background: rgb(34, 193, 195);
   background: linear-gradient(0deg, rgb(34, 193, 195) 0%, rgb(253, 187, 45) 100%);
-  transform: rotate(260deg);
   position: relative;
 }
-body .container .nob:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  background: black;
-  width: 25px;
-  height: 25px;
-}
-body .container .nob:after {
-  content: "";
-  position: absolute;
-  right: 0;
-  background: red;
-  width: 25px;
-  height: 25px;
-}
-body .container .nob .handle::-webkit-slider-thumb {
+body .container .knob .handle::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 36px;
