@@ -25,9 +25,10 @@ const track = audioCtx.createMediaElementSource(audioElement);
 
 const playButton = document.querySelector('.play');
 
-const biquadFilterOptions = {type: 'lowpass'};
-const biquadFilter = new BiquadFilterNode(audioCtx, biquadFilterOptions);
-biquadFilter.gain.value = 25;
+const biquadFilter = audioCtx.createBiquadFilter();
+biquadFilter.type = "lowpass";
+biquadFilter.frequency.value = 1000;
+biquadFilter.Q.value = 5;
 
 function main()
 {
@@ -105,7 +106,7 @@ function onMouseMove(event)
 
         track.connect(biquadFilter).connect(audioCtx.destination);
 
-        console.log(volumeSetting * 200)
+        console.log(volumeSetting * 20)
 
         document.getElementById("volumeValue").innerHTML = volumeSetting + "%"; //update volume text
     }
