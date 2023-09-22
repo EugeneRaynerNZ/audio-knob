@@ -1,0 +1,23 @@
+{
+  "name": "serato-job",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000s\u0000o\u0000u\u0000n\u0000d\u0000-\u0000n\u0000o\u0000b\u0000\r\u0000 \u0000",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "sass style.scss style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EugeneRaynerNZ/sound-nob.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EugeneRaynerNZ/sound-nob/issues"
+  },
+  "homepage": "https://github.com/EugeneRaynerNZ/sound-nob#readme",
+  "devDependencies": {
+    "sass": "^1.68.0"
+  }
+}
