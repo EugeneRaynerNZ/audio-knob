@@ -4,28 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Nob</title>
+    <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="title">
+        <h1>Eugene's Filter Knob</h1>
+    </div>
+
     <div class="container">
-        <div id="knob" class="knob">
-            <!-- <input type="range" id="filter" class="handle" list="filter-vals" min="0" max="2000" value="0" step="0.01" data-action="filter" />
-            <datalist id="filter-vals">
-                <option value="0" label="left">
-                <option value="2000" label="right">
-            </datalist>
-            <label for="filter">Filter</label> -->
+        <h2>Low Pass</h2>
+        <div class="knob-container">
+            <span>0%</span>
+            <div id="knob" class="knob">
+                <!-- <input type="range" id="filter" class="handle" list="filter-vals" min="0" max="2000" value="0" step="0.01" data-action="filter" />
+                <datalist id="filter-vals">
+                    <option value="0" label="left">
+                    <option value="2000" label="right">
+                </datalist>
+                <label for="filter">Filter</label> -->
+            </div>
+            <span>100%</span>
         </div>
     
         <audio src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3" crossorigin="anonymous" ></audio>
         <button data-playing="false" class="play" role="switch" aria-checked="false">
-            <span>Play/Pause</span>
+            Play
         </button>
 
         <div id="volumeValue">
-
+            0%
         </div>
-        <!-- <script src="script.js"></script> -->
+        
         <script src="script.js"></script>
     </div>
 </body>

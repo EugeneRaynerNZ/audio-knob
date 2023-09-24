@@ -1,158 +1,132 @@
-var knobPositionX;
-var knobPositionY;
-var mouseX;
-var mouseY;
-var knobCenterX;
-var knobCenterY;
-var adjacentSide;
-var oppositeSide;
-var currentRadiansAngle;
-var getRadiansInDegrees;
-var finalAngleInDegrees;
-var tickHighlightPosition;
-var startingTickAngle = -135;
-var tickContainer = document.getElementById("tickContainer");
-var volumeKnob = document.getElementById("knob");
-var boundingRectangle = volumeKnob.getBoundingClientRect(); //get rectangular geometric data of knob (x, y, width, height)
+let knobPositionX;
+let knobPositionY;
+let mouseX;
+let mouseY;
+let knobCenterX;
+let knobCenterY;
+let adjacentSide;
+let oppositeSide;
+let currentRadiansAngle;
+let getRadiansInDegrees;
+let finalAngleInDegrees;
+let tickHighlightPosition;
+let filterValue = 300;
+const filterKnob = document.getElementById("knob");
+const boundingRectangle = filterKnob.getBoundingClientRect(); // Get the bounding rectangle of the knob (x, y, width, height)
 
-// for cross browser
+// For cross-browser support
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 
-// load some sound
+// Load some sound
 const audioElement = document.querySelector('audio');
 const track = audioCtx.createMediaElementSource(audioElement);
 
-const playButton = document.querySelector('.play');
-
+// Create biquad filter and set initial value
 const biquadFilter = audioCtx.createBiquadFilter();
 biquadFilter.type = "lowpass";
-biquadFilter.frequency.value = 1000;
-biquadFilter.Q.value = 5;
+biquadFilter.frequency.value = filterValue;
 
-function main()
-{
-    volumeKnob.addEventListener(getMouseDown(), onMouseDown); //listen for mouse button click
-    document.addEventListener(getMouseUp(), onMouseUp); //listen for mouse button release
+function main() {
+    filterKnob.addEventListener(getMouseDown(), onMouseDown); // Listen for mouse button click
+    document.addEventListener(getMouseUp(), onMouseUp); // Listen for mouse button release
+
+    const playButton = document.querySelector('.play');
+
+    playButton.addEventListener('click', function () {
+        // Check if the context is in the suspended state (autoplay policy)
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        if (this.dataset.playing === 'false') {
+            audioElement.play();
+            this.dataset.playing = 'true';
+            playButton.innerHTML = 'Stop'
+        } else if (this.dataset.playing === 'true') {
+            audioElement.pause();
+            this.dataset.playing = 'false';
+            playButton.innerHTML = 'Play'
+        }
+
+        let state = this.getAttribute('aria-checked') === "true" ? true : false;
+        this.setAttribute('aria-checked', state ? "false" : "true");
+    }, false);
+
+    // console.log(biquadFilter)
+
+    track.connect(biquadFilter).connect(audioCtx.destination);
+
 }
 
-//on mouse button down
-function onMouseDown()
-{
-    document.addEventListener(getMouseMove(), onMouseMove); //start drag
+// On mouse button down
+function onMouseDown() {
+    document.addEventListener(getMouseMove(), onMouseMove); // Start drag
 }
 
-playButton.addEventListener('click', function() {
-	
-    // check if context is in suspended state (autoplay policy)
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-    
-    if (this.dataset.playing === 'false') {
-        audioElement.play();
-        this.dataset.playing = 'true';
-    // if track is playing pause it
-    } else if (this.dataset.playing === 'true') {
-        audioElement.pause();
-        this.dataset.playing = 'false';
-    }
-    
-    let state = this.getAttribute('aria-checked') === "true" ? true : false;
-    this.setAttribute( 'aria-checked', state ? "false" : "true" );
-    
-}, false);
-
-//on mouse button release
-function onMouseUp()
-{
-    document.removeEventListener(getMouseMove(), onMouseMove); //stop drag
+// On mouse button release
+function onMouseUp() {
+    document.removeEventListener(getMouseMove(), onMouseMove); // Stop drag
 }
 
-//compute mouse angle relative to center of volume knob
-//For clarification, see my basic trig explanation at:
-//https://www.quora.com/What-is-the-significance-of-the-number-pi-to-the-universe/answer/Kevin-Lam-15
-function onMouseMove(event)
-{
-    knobPositionX = boundingRectangle.left; //get knob's global x position
-    knobPositionY = boundingRectangle.top; //get knob's global y position
+// Compute mouse angle relative to the center of the volume knob
+function onMouseMove(event) {
+    knobPositionX = boundingRectangle.left; // Get knob's global x position
+    knobPositionY = boundingRectangle.top; // Get knob's global y position
 
-    mouseX = event.pageX; //get mouse's x global position
-    mouseY = event.pageY; //get mouse's y global position
-    
-    knobCenterX = boundingRectangle.width / 2 + knobPositionX; //get global horizontal center position of knob relative to mouse position
-    knobCenterY = boundingRectangle.height / 2 + knobPositionY; //get global vertical center position of knob relative to mouse position
+    mouseX = event.pageX; // Get mouse's x global position
+    mouseY = event.pageY; // Get mouse's y global position
 
-    adjacentSide = knobCenterX - mouseX; //compute adjacent value of imaginary right angle triangle
-    oppositeSide = knobCenterY - mouseY; //compute opposite value of imaginary right angle triangle
+    knobCenterX = boundingRectangle.width / 2 + knobPositionX; // Get global horizontal center position of the knob relative to mouse position
+    knobCenterY = boundingRectangle.height / 2 + knobPositionY; // Get global vertical center position of the knob relative to mouse position
 
-    //arc-tangent function returns circular angle in radians
-    //use atan2() instead of atan() because atan() returns only 180 degree max (PI radians) but atan2() returns four quadrant's 360 degree max (2PI radians)
+    adjacentSide = knobCenterX - mouseX; // Compute adjacent value of the imaginary right-angle triangle
+    oppositeSide = knobCenterY - mouseY; // Compute opposite value of the imaginary right-angle triangle
+
     currentRadiansAngle = Math.atan2(adjacentSide, oppositeSide);
 
-    getRadiansInDegrees = currentRadiansAngle * 180 / Math.PI; //convert radians into degrees
+    getRadiansInDegrees = currentRadiansAngle * 180 / Math.PI; // Convert radians into degrees
 
-    finalAngleInDegrees = -(getRadiansInDegrees - 135); //knob is already starting at -135 degrees due to visual design so 135 degrees needs to be subtracted to compensate for the angle offset, negative value represents clockwise direction
+    finalAngleInDegrees = -(getRadiansInDegrees - 135); // Knob is already starting at -135 degrees due to visual design, so 135 degrees needs to be subtracted to compensate for the angle offset (negative value represents clockwise direction)
 
-    //only allow rotate if greater than zero degrees or lesser than 270 degrees
-    if(finalAngleInDegrees >= 0 && finalAngleInDegrees <= 270)
-    {
-        volumeKnob.style.transform = "rotate(" + finalAngleInDegrees + "deg)"; //use dynamic CSS transform to rotate volume knob
+    // Only allow rotation if the angle is greater than or equal to 0 degrees and less than or equal to 270 degrees
+    if (finalAngleInDegrees >= 0 && finalAngleInDegrees <= 271) {
+        filterKnob.style.transform = "rotate(" + finalAngleInDegrees + "deg)"; // Use dynamic CSS transform to rotate the volume knob
 
-        //270 degrees maximum freedom of rotation / 100% volume = 1% of volume difference per 2.7 degrees of rotation
+        // Calculate the volume setting based on the rotation angle
         volumeSetting = Math.floor(finalAngleInDegrees / (270 / 100));
 
-        biquadFilter.frequency.value = volumeSetting;
+        biquadFilter.frequency.value = 300 + (volumeSetting * 10);
+       
+        // console.log(biquadFilter)
 
-        track.connect(biquadFilter).connect(audioCtx.destination);
+        // console.log(volumeSetting * 20);
 
-        console.log(volumeSetting * 20)
-
-        document.getElementById("volumeValue").innerHTML = volumeSetting + "%"; //update volume text
+        document.getElementById("volumeValue").innerHTML = volumeSetting + "%"; // Update the volume text
     }
 }
 
-//detect for mobile devices from https://www.sitepoint.com/navigator-useragent-mobiles-including-ipad/
-function detectMobile()
-{
-    var result = (navigator.userAgent.match(/(iphone)|(ipod)|(ipad)|(android)|(blackberry)|(windows phone)|(symbian)/i));
+// Detect mobile devices
+function detectMobile() {
+    const result = (navigator.userAgent.match(/(iphone)|(ipod)|(ipad)|(android)|(blackberry)|(windows phone)|(symbian)/i));
 
-    if(result !== null)
-    {
+    if (result !== null) {
         return "mobile";
     } else {
         return "desktop";
     }
 }
 
-function getMouseDown()
-{
-    if(detectMobile() == "desktop")
-    {
-        return "mousedown";
-    } else {
-        return "touchstart";
-    }
+function getMouseDown() {
+    return detectMobile() === "desktop" ? "mousedown" : "touchstart";
 }
 
-function getMouseUp()
-{
-    if(detectMobile() == "desktop")
-    {
-        return "mouseup";
-    } else {
-        return "touchend";
-    }
+function getMouseUp() {
+    return detectMobile() === "desktop" ? "mouseup" : "touchend";
 }
 
-function getMouseMove()
-{
-    if(detectMobile() == "desktop")
-    {
-        return "mousemove";
-    } else {
-        return "touchmove";
-    }
+function getMouseMove() {
+    return detectMobile() === "desktop" ? "mousemove" : "touchmove";
 }
 
 main();
