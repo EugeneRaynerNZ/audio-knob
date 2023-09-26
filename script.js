@@ -96,11 +96,11 @@ function onMouseMove(event) {
         // Calculate the volume setting based on the rotation angle
         volumeSetting = Math.floor(finalAngleInDegrees / (270 / 100));
 
-        biquadFilter.frequency.value = 300 + (volumeSetting * 10);
+        biquadFilter.frequency.value = 300 + (volumeSetting * 24);
        
         // console.log(biquadFilter)
 
-        // console.log(volumeSetting * 20);
+        console.log(volumeSetting);
 
         document.getElementById("volumeValue").innerHTML = volumeSetting + "%"; // Update the volume text
     }
