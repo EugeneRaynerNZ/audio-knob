@@ -6,6 +6,8 @@ body {
   height: 100vh;
   flex-direction: column;
   font-family: "Karla", sans-serif;
+  background: #222831;
+  color: #EEEEEE;
 }
 body h1 {
   font-family: "Montserrat", sans-serif;
@@ -37,9 +39,9 @@ body .container .knob-container .knob {
   border-radius: 50%;
   height: 80px;
   width: 80px;
-  background: #193643;
+  background: #FFD369;
   position: relative;
-  border: 4px solid #273439;
+  border: 4px solid #FFD369;
 }
 body .container .knob-container .knob:before {
   content: "";
@@ -48,12 +50,12 @@ body .container .knob-container .knob:before {
   left: 11%;
   width: 4px;
   height: 15px;
-  background-color: #a8d8f8;
+  background-color: #393E46;
   transform: rotate(45deg);
 }
 body .container button {
   box-shadow: 0px 6px 8px -7px #111416;
-  background-color: #b1e0ff;
+  background-color: #EEEEEE;
   border-radius: 8px;
   color: #151515;
   font-size: 16px;
