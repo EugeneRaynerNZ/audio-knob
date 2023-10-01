@@ -10,7 +10,7 @@ let currentRadiansAngle;
 let getRadiansInDegrees;
 let finalAngleInDegrees;
 let tickHighlightPosition;
-let filterValue = 0;
+let filterValue = 1;
 const filterKnob = document.getElementById("knob");
 const boundingRectangle = filterKnob.getBoundingClientRect(); // Get the bounding rectangle of the knob (x, y, width, height)
 
@@ -105,7 +105,7 @@ function computeRotationAngle() {
 
         // Calculate the filter setting based on the rotation angle
         let filterSetting = Math.floor(finalAngleInDegrees / (270 / 100));
-        biquadFilter.frequency.value = filterSetting * 100;
+        biquadFilter.frequency.value = filterSetting * 50;
         document.getElementById("frequencyValue").innerHTML = `${filterSetting}%`; // Update the filter text
     }
 }
