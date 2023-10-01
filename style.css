@@ -72,7 +72,7 @@ body .container button:hover {
 body .container button:active {
   box-shadow: none;
 }
-body .container #volumeValue {
+body .container #frequencyValue {
   text-align: center;
 }
 
